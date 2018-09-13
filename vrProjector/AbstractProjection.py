@@ -68,6 +68,10 @@ class AbstractProjection:
         if len(arr[0]) == 3:
             arr = np.c_[arr, 255 * np.ones((len(arr), 1), np.uint8)]
         img = Image.frombuffer(mode, imgsize, arr.tostring(), 'raw', mode, 0, 1)
+        if destFile.endswith('.jpg') or destFile.endswith('.jpeg'):
+            jpegImg = Image.new("RGB", img.size, (255, 255, 255))
+            jpegImg.paste(img, mask=img.split()[3])
+            img = jpegImg
         img.save(destFile)
 
     def saveImage(self, destFile):
